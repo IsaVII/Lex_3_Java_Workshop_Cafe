@@ -26,7 +26,11 @@ public class UiComponentCreator {
     }
 
     public static String secondGreetingText(String name) {
-        return "Hi, " + name + "! What would you like to order?";
+        return "<html>Hi, <b>" + escapeHtml(name) + "</b>! What would you like to order?</html>";
+    }
+
+    private static String escapeHtml(String text) {
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
     
     public JLabel createMenuLabel(){
