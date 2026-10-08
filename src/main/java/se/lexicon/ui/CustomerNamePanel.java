@@ -19,6 +19,10 @@ public class CustomerNamePanel extends JPanel {
         add(nameField);
     }
 
+    public void setName(String name) {
+        nameField.setText(name);
+    }
+
     public void setOnNameChanged(Consumer<String> onNameChanged) {
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override

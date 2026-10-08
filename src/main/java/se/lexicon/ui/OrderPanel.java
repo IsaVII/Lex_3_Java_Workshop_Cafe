@@ -16,7 +16,7 @@ public class OrderPanel extends JPanel {
     private static final int PANEL_WIDTH = 350;
     private static final int ROW_HEIGHT = 40;
 
-    private final Order order;
+    private Order order;
     private final Map<MenuItem, JSpinner> orderLines = new HashMap<>();
     private final Dimension reservedSize;
     private final int maxDistinctItems;
@@ -32,6 +32,11 @@ public class OrderPanel extends JPanel {
 
     public void setOnOrderChanged(Runnable onOrderChanged) {
         this.onOrderChanged = onOrderChanged;
+    }
+
+    public void resetOrder(Order newOrder) {
+        this.order = newOrder;
+        rebuild();
     }
 
     public void addOrderLine(MenuItem menuItem) {

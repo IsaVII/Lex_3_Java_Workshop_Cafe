@@ -13,9 +13,20 @@ public class UiComponentCreator {
     
     public JLabel createGreetingLabel(){
         return UiComponentCreator.createPanelWithLabel(
-                "Welcome to Lexicon Cafe! Please select an item from the menu below.",
+                "Welcome to Lexicon Cafe! What is your name?",
                 SwingConstants.CENTER,  Font.PLAIN, 14f
         );
+    }
+
+    public JLabel createSecondGreetingLabel(String name){
+        return UiComponentCreator.createPanelWithLabel(
+                secondGreetingText(name),
+                SwingConstants.CENTER,  Font.PLAIN, 14f
+        );
+    }
+
+    public static String secondGreetingText(String name) {
+        return "Hi, " + name + "! What would you like to order?";
     }
     
     public JLabel createMenuLabel(){
