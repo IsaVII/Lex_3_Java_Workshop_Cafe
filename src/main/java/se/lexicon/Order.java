@@ -20,8 +20,8 @@ public class Order {
             subTotal += lineItem.getTotalPrice();
         }
         
-        double discount = isLoyaltyMember ? subTotal * 0.15 : subTotal > 150 ? subTotal * 0.10 : 0;
-        double vat = (subTotal - discount) * 0.12;
+        double discount = isLoyaltyMember ? subTotal * loyaltyDiscount : subTotal > discountThreshold ? subTotal * highValueDiscount : 0;
+        double vat = (subTotal - discount) * vatRate;
         double totalPrice = subTotal - discount + vat;
 
         //***** print receipt  *****
