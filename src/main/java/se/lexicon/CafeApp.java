@@ -3,32 +3,42 @@ package se.lexicon;
 import java.util.List;
 
 public class CafeApp {
-    
-    void main(){
+
+    void main() {
         Printer printer = new Printer();
-        List<MenuItem> menuItems =  createMenuItems();
-        
-         String userName = IO.readln("Welcome to Lexicon Cafe! What is your name? ");
-        // Logic
+        Menu menu = new Menu();
+
+        //***** Get username ***** 
+/*        String userName = IO.readln(printer.askForUserName());
+        //if no username -> ask again
+        while (StringValidation.IsEmptyString(userName)) {
+            userName = IO.readln(printer.askForUserName());
+        }*/
+
+        String userName = "Isa"; //TODO:: REMOVE; SINCE THIS IS JUST FOR TESTING 
+
+        //*****  Print greeting and menu   ***** 
         printer.greeting(userName);
-        
-        printer.printMenu(menuItems);
-        
+        printer.printMenu(menu.getMenuItems());
+
+        //***** get order from user  ***** 
+        int menuNumber = 0;
+        boolean validInput = false;
+
+        while (!validInput) {
+            String userInput = IO.readln(printer.getEnterItemNumbers());
+
+            try {
+                menuNumber = Integer.parseInt(userInput);
+                validInput = menu.isCorrectMenuNumber(menuNumber);
+            } catch (NumberFormatException e) {
+                IO.println("Invalid input. Please enter a valid number.");
+            }
+        }
     }
+}
     
     
-    List<MenuItem> createMenuItems(){
-        List<MenuItem> menuItems = List.of(
-            new MenuItem("Espresso", 25.00),
-            new MenuItem("Cappuccino", 35.00),
-            new MenuItem("Latte", 40.00),
-            new MenuItem("Croissant", 30.00),
-            new MenuItem("Sandwich", 55.00)
-        );
-        
-        return menuItems;
-    }
     
    
   
-}
