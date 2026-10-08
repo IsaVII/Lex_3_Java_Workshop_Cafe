@@ -16,6 +16,7 @@ public class CafeApp {
             userName = IO.readln(userNameQuestion);
         }
 
+        
         //*****  Print greeting and menu   ***** 
         printer.greeting(userName);
         printer.printMenu(menu.getMenuItems());
