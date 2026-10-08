@@ -12,6 +12,7 @@ public class LineItem {
     public LineItem(MenuItem menuItem, int amount) {
         this.menuItem = menuItem;
         setAmount(amount);
+        IO.println(menuItem.getName() + " added.\n");
     }
     
     public void printLineItem() {

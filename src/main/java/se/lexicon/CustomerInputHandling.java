@@ -42,10 +42,13 @@ public class CustomerInputHandling {
         boolean validInput = false;
 
         while (!validInput) {
-            String userInput = IO.readln("Enter item number (1-" + menu.getMenuItems().size() + "): ");
+            String userInput = IO.readln("Enter item number (1-" + menu.getMenuItems().size() + "), or 0 to finish: ");
 
             try {
                 menuNumber = Integer.parseInt(userInput);
+                if ( menuNumber == 0) {
+                    return null; // User chose to finish ordering
+                }
                 validInput = menu.isCorrectMenuNumber(menuNumber);
             } catch (NumberFormatException e) {
                 IO.println("Invalid input. Please enter a valid number.");
