@@ -63,7 +63,7 @@ public class CafeApp {
             String loyaltyMemberQuestion = "Are you a loyalty member? (yes/no): ";
             String loyaltyMemberInput = IO.readln(loyaltyMemberQuestion);
 
-            if (!loyaltyMemberInput.equals("yes") && !loyaltyMemberInput.equals("no")) {
+            while (!loyaltyMemberInput.equalsIgnoreCase("yes") && !loyaltyMemberInput.equalsIgnoreCase("no")) {
                 IO.println("Invalid input. Please enter 'yes' or 'no'.");
                 loyaltyMemberInput = IO.readln(loyaltyMemberQuestion);
             }
