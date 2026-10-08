@@ -9,7 +9,7 @@ Each challenge was developed in its own branch and merged into main afterwards. 
 Challenge 2 doesn't have its own branch, since I ended up implementing its solution directly while working on the base task.
 
 ### GUI
-I hadn't used the Java Swing library for UI panels like this before — I'd only touched it briefly for a Java game, in a different context — so this part was new territory for me, and the only section where I leaned on AI to help me move forward the way I wanted to.<br><br>
+I hadn't used the Java Swing library for UI panels like this before; I'd only touched it briefly for a Java game, in a different context. So this part was new for me, and the only section where I leaned on AI to help me move forward the way I wanted to.<br><br>
 
 Even so, I worked through it step by step, learned the process along the way, and wrote as much of it by hand as I could.
 
