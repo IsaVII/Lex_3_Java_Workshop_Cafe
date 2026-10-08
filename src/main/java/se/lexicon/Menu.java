@@ -1,7 +1,6 @@
 package se.lexicon;
 
 import java.util.List;
-import java.util.jar.JarEntry;
 
 public class Menu {
 
