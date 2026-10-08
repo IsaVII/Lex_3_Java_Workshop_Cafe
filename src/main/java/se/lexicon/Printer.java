@@ -28,4 +28,8 @@ public class Printer {
         }
         printLine();
     }
+
+    public void greeting(String userName) {
+        IO.println("Hi " + userName + "! Here is our menu: \n");
+    }
 }

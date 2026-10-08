@@ -8,12 +8,11 @@ public class CafeApp {
         Printer printer = new Printer();
         List<MenuItem> menuItems =  createMenuItems();
         
-        
+         String userName = IO.readln("Welcome to Lexicon Cafe! What is your name? ");
         // Logic
+        printer.greeting(userName);
         
         printer.printMenu(menuItems);
-        
-        
         
     }
     
