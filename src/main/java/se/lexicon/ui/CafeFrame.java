@@ -10,30 +10,20 @@ public class CafeFrame extends JFrame {
     
     public CafeFrame() {
         super("Lexicon Cafe");
-
+        
+        UiComponentCreator componentCreator = new UiComponentCreator();
         Menu menu = new Menu();
 
         //Main layout - stack content top to bottom
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        //Title
-        JLabel titleLabel = new JLabel("Lexicon Cafe", SwingConstants.CENTER);
-        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD, 20f));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        //Menu
-        JLabel menuLabel = new JLabel("Menu", SwingConstants.CENTER);
-        menuLabel.setFont(menuLabel.getFont().deriveFont(Font.BOLD, 16f));
-        menuLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        menuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         MenuPanel menuPanel = new MenuPanel(menu.getMenuItems());
         menuPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuPanel.setMaximumSize(menuPanel.getPreferredSize());
 
-        add(titleLabel);
-        add(menuLabel);
+        add(componentCreator.createTitleLabel());
+        add(componentCreator.createGreetingLabel());
+        add(componentCreator.createMenuLabel());
         add(menuPanel);
 
         //Default data
