@@ -20,10 +20,7 @@ public class CafeApp {
             printer.printMenu(menu.getMenuItems());
 
             //***** get order from user  ***** 
-            order.setMenuItem(customerInputHandling.getMenuItemFromUser(menu));
-
-            //***** get the amount ordered from user ***** 
-            order.setOrderAmount(customerInputHandling.getOrderAmountFromUser());
+            order.addItem(new LineItem(customerInputHandling.getMenuItemFromUser(menu), customerInputHandling.getOrderAmountFromUser()));
 
             //*****  Ask for loyalty Member  *****
             order.setLoyaltyMember(customerInputHandling.getLoyaltyMemberStatusFromUser());
