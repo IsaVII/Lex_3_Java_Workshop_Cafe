@@ -5,10 +5,6 @@ import java.util.Locale;
 
 public class Printer {
     
-    private String askForUserName = "Welcome to Lexicon Cafe! What is your name?";
-    private String enterItemNumbers = "Enter item number (1-5):";
-    
-    
     public void printMenu(List<MenuItem> menuItems){
         printCafeTitle();
         printOrderList(menuItems);
@@ -18,11 +14,28 @@ public class Printer {
         IO.println("Hi " + userName + "! Here is our menu: \n");
     }
     
-
-    
-    private void printCafeTitle(){
+    public void printCafeTitle(){
         printLine();
         IO.println("\t\t Lexicon Cafe");
+        printLine();
+    }
+    
+    public void printOrderSummary(String userName, MenuItem menuItem, int orderAmount, double SubTotal, double totalPrice, double Discount, double VAT){
+        printLine();
+        IO.println(String.format("%-15s : %s", "Customer", userName));
+        IO.println(String.format("%-15s : %s x %d", "Order", menuItem.getName(), orderAmount));;
+        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "SubTotal", SubTotal);
+        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "Discount", Discount);
+        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "VAT", VAT);
+        IO.println("------------------------------");
+        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "Total Price", totalPrice);
+        printLine();
+    }
+    
+    public void printGoodBye(String userName) {
+        printLine();
+        IO.println("Thank you, " + userName + "!\n" +
+                "Have a great day and see you next time.!");
         printLine();
     }
 
@@ -39,11 +52,4 @@ public class Printer {
         printLine();
     }
 
-    public String getEnterItemNumbers() {
-        return enterItemNumbers;
-    }
-
-    public String askForUserName() {
-        return askForUserName;
-    }
 }
