@@ -1,5 +1,6 @@
 package se.lexicon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,20 +22,27 @@ public class Printer {
         printLine();
     }
 
-    public void printOrderSummary(String userName, MenuItem menuItem, int orderAmount, double SubTotal, double totalPrice, double Discount, double VAT) {
+    public void printOrderSummary(String userName, ArrayList<LineItem> items, int orderAmount, double SubTotal, double totalPrice, double Discount, double VAT) {
         IO.println("");
         printCafeTitle();
         IO.println(String.format("%-12s : %s", "Customer", userName));
-        IO.println(String.format("%-12s : %s x %d", "Order", menuItem.getName(), orderAmount));
-        IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "SubTotal", SubTotal));
+        
+        //Items
+        printBasicLine();
+        for (int i = 0; i < items.size(); i++) {
+            LineItem lineItem = items.get(i);
+            lineItem.printLineItem();
+        }
 
+        printBasicLine();
+        IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "SubTotal", SubTotal));
 
         if (Discount > 0) {
             IO.println(String.format(Locale.ENGLISH, "%-12s : -%.2f SEK", "Discount",  Discount));
         }
         
         IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "VAT", VAT));
-        IO.println("------------------------------");
+        printBasicLine();
         IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "Total Price", totalPrice));
     }
 
@@ -56,9 +64,6 @@ public class Printer {
         printLine();
     }
 
-    private void printLine() {
-        IO.println("==============================");
-    }
 
     private void printOrderList(List<MenuItem> menuItems) {
         for (int i = 0; i < menuItems.size(); i++) {
@@ -67,6 +72,14 @@ public class Printer {
             IO.println(String.format(Locale.ENGLISH, "%d.\t%-15s %.2f SEK", i + 1, menuItem.getName(), menuItem.getPrice()));
         }
         printLine();
+    }
+    
+    private void printLine() {
+        IO.println("==============================");
+    }
+    
+    private void printBasicLine() {
+        IO.println("------------------------------");
     }
 
   

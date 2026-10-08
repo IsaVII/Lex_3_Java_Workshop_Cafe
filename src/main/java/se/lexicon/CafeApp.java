@@ -1,104 +1,53 @@
 package se.lexicon;
 
-import java.util.List;
-
 public class CafeApp {
 
     void main(String[] args) {
         Printer printer = new Printer();
         Menu menu = new Menu();
+        CustomerInputHandling customerInputHandling = new CustomerInputHandling();
 
         int customerCount = 0;
         double totalRevenue = 0.0;
 
-        //***** Get username ***** 
-        String userNameQuestion = "Welcome to Lexicon Cafe! What is your name?";
-        String userName = IO.readln(userNameQuestion);
-        //if no username -> ask again
-        while (StringValidation.IsEmptyString(userName)) {
-            userName = IO.readln(userNameQuestion);
-        }
+        Order order = new Order(customerInputHandling.getCustomerNameFromUser());
 
-        while (!userName.equals("done")) {
+        while (!order.customerName.equals("done")) {
             customerCount++;
 
             //*****  Print greeting and menu   ***** 
-            printer.greeting(userName);
+            printer.greeting(order.getCustomerName());
             printer.printMenu(menu.getMenuItems());
 
-            //***** get order from user  ***** 
-            int menuNumber = 0;
-            boolean validInput = false;
-
-            while (!validInput) {
-                String userInput = IO.readln("Enter item number (1-" + menu.getMenuItems().size() + "): ");
-
-                try {
-                    menuNumber = Integer.parseInt(userInput);
-                    validInput = menu.isCorrectMenuNumber(menuNumber);
-                } catch (NumberFormatException e) {
-                    IO.println("Invalid input. Please enter a valid number.");
-                }
-            }
-
-            //***** get the amount ordered from user ***** 
-            int orderAmount = 0;
-            validInput = false;
-
-            while (!validInput) {
-                String userInput = IO.readln("How many? ");
-                try {
-                    orderAmount = Integer.parseInt(userInput);
-                    if (orderAmount > 0) {
-                        validInput = true;
-                    } else {
-                        IO.println("Invalid input. Please enter a positive number.");
-                    }
-                } catch (NumberFormatException e) {
-                    IO.println("Invalid input. Please enter a valid number.");
-                }
+            //***** Get orders from user  *****
+            MenuItem menuItem = customerInputHandling.getMenuItemFromUser(menu);
+            while (menuItem != null) {
+                int orderAmount = customerInputHandling.getOrderAmountFromUser();
+                order.addItem(new LineItem(menuItem, orderAmount));
+                menuItem = customerInputHandling.getMenuItemFromUser(menu);
             }
 
             //*****  Ask for loyalty Member  *****
-            String loyaltyMemberQuestion = "Are you a loyalty member? (yes/no): ";
-            String loyaltyMemberInput = IO.readln(loyaltyMemberQuestion);
-
-            while (!loyaltyMemberInput.equalsIgnoreCase("yes") && !loyaltyMemberInput.equalsIgnoreCase("no")) {
-                IO.println("Invalid input. Please enter 'yes' or 'no'.");
-                loyaltyMemberInput = IO.readln(loyaltyMemberQuestion);
-            }
-
-            boolean isLoyaltyMember = loyaltyMemberInput.equalsIgnoreCase("yes");
-
+            order.setLoyaltyMember(customerInputHandling.getLoyaltyMemberStatusFromUser());
+            
             //*****  Calculate total price *****
-            MenuItem menuItem = menu.getMenuItems().get(menuNumber - 1);
-            double subTotal = menuItem.getPrice() * orderAmount;
-            double discount = isLoyaltyMember ? subTotal * 0.15 : subTotal > 150 ? subTotal * 0.10 : 0;
-            double vat = (subTotal - discount) * 0.12;
-            double totalPrice = subTotal - discount + vat;
-
-            totalRevenue += totalPrice;
-
-            //***** print receipt  *****
-            printer.printOrderSummary(userName, menuItem, orderAmount, subTotal, totalPrice, discount, vat);
-
+            double orderPrice = order.getTotalPriceAndPrintOrder(printer);
+            totalRevenue += orderPrice;
+          
             //***** print goodbye message  *****
-            printer.printGoodBye(userName);
+            printer.printGoodBye(order.getCustomerName());
             
             IO.println("");
 
             //***** check for next customer  *****
-            String nextCustomerQuestion = "Next customer name (or 'done' to close): ";
-            userName = IO.readln(nextCustomerQuestion);
-            //if no username -> ask again
-            while (StringValidation.IsEmptyString(userName)) {
-                userName = IO.readln(nextCustomerQuestion);
-            }
+            order = new Order(customerInputHandling.getNewCustomerName());
         }
         
         //***** print total revenue and customer count  *****
         printer.printEndOfDayReport(customerCount, totalRevenue);
     }
+
+
 }
     
     
