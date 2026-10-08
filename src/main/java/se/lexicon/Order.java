@@ -1,6 +1,7 @@
 package se.lexicon;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
 
@@ -15,20 +16,44 @@ public class Order {
     double vatRate = 0.12;  //12% 
 
     public double getTotalPriceAndPrintOrder(Printer printer) {
-        double subTotal = 0.0;
-        for (LineItem lineItem : lineItems) {
-            subTotal += lineItem.getTotalPrice();
-        }
-        
-        double discount = isLoyaltyMember ? subTotal * loyaltyDiscount : subTotal > discountThreshold ? subTotal * highValueDiscount : 0;
-        double vat = (subTotal - discount) * vatRate;
-        double totalPrice = subTotal - discount + vat;
+        double subTotal = getSubTotal();
+        double discount = getDiscount();
+        double vat = getVat();
+        double totalPrice = getTotalPrice();
 
         //***** print receipt  *****
         printer.printOrderSummary(customerName, lineItems, lineItems.size(), subTotal, totalPrice, discount, vat);
 
         return totalPrice;
     }
+
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public double getSubTotal() {
+        double subTotal = 0.0;
+        for (LineItem lineItem : lineItems) {
+            subTotal += lineItem.getTotalPrice();
+        }
+        return subTotal;
+    }
+
+    public double getDiscount() {
+        double subTotal = getSubTotal();
+        return isLoyaltyMember ? subTotal * loyaltyDiscount
+                : subTotal > discountThreshold ? subTotal * highValueDiscount : 0;
+    }
+
+    public double getVat() {
+        return (getSubTotal() - getDiscount()) * vatRate;
+    }
+
+    public double getTotalPrice() {
+        return getSubTotal() - getDiscount() + getVat();
+    }
+
+
 
 
     public Order(String userName) {

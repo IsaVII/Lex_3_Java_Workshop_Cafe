@@ -26,7 +26,7 @@ public class MenuPanel extends JPanel {
             String text = String.format(Locale.ENGLISH, "%d. %-15s %6.2f SEK", i + 1, menuItem.getName(), menuItem.getPrice());
 
             JButton itemButton = new JButton(text);
-            itemButton.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+            itemButton.setFont(new Font(Font.DIALOG, Font.PLAIN, 13));
             itemButton.setHorizontalAlignment(SwingConstants.LEFT);
             itemButton.addActionListener(e -> onItemSelected.accept(menuItem));
 
