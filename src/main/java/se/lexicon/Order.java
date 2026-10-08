@@ -64,6 +64,10 @@ public class Order {
         return customerName;
     }
 
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public void addItem(LineItem lineItem) {
         lineItems.add(lineItem);
     }

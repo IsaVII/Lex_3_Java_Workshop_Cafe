@@ -32,8 +32,16 @@ public class CafeFrame extends JFrame {
         orderPanel.setOnOrderChanged(() -> receiptPanel.refresh(order));
         receiptPanel.refresh(order);
 
+        CustomerNamePanel customerNamePanel = new CustomerNamePanel(order.getCustomerName());
+        customerNamePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customerNamePanel.setOnNameChanged(name -> {
+            order.setCustomerName(name);
+            receiptPanel.refresh(order);
+        });
+
         add(componentCreator.createTitleLabel());
         add(componentCreator.createGreetingLabel());
+        add(customerNamePanel);
         add(componentCreator.createMenuLabel());
         add(menuPanel);
         add(orderPanel);
