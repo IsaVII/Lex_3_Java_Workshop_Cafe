@@ -68,6 +68,10 @@ public class Order {
         lineItems.add(lineItem);
     }
 
+    public void removeItem(LineItem lineItem) {
+        lineItems.remove(lineItem);
+    }
+
     public void setLoyaltyMember(boolean loyaltyMember) {
         isLoyaltyMember = loyaltyMember;
     }

@@ -19,23 +19,15 @@ public class OrderPanel extends JPanel {
     private final Order order;
     private final Map<MenuItem, JSpinner> orderLines = new HashMap<>();
     private final Dimension reservedSize;
-    private int nextRow = 0;
+    private final int maxDistinctItems;
     private Runnable onOrderChanged = () -> {};
 
     public OrderPanel(Order order, int maxDistinctItems) {
         this.order = order;
-        this.reservedSize = new Dimension(PANEL_WIDTH, maxDistinctItems * ROW_HEIGHT-40);
+        this.maxDistinctItems = maxDistinctItems;
+        this.reservedSize = new Dimension(PANEL_WIDTH, maxDistinctItems * ROW_HEIGHT - 40);
         setLayout(new GridBagLayout());
-
-        // Filler row below every possible real row: absorbs leftover vertical
-        // space so GridBagLayout anchors the real rows to the top instead of
-        // centering the whole grid within the panel's fixed reserved height.
-        GridBagConstraints fillerConstraints = new GridBagConstraints();
-        fillerConstraints.gridx = 0;
-        fillerConstraints.gridy = maxDistinctItems;
-        fillerConstraints.weighty = 1.0;
-        fillerConstraints.fill = GridBagConstraints.VERTICAL;
-        add(Box.createGlue(), fillerConstraints);
+        addFiller(0);
     }
 
     public void setOnOrderChanged(Runnable onOrderChanged) {
@@ -50,38 +42,79 @@ public class OrderPanel extends JPanel {
             return;
         }
 
+        LineItem lineItem = new LineItem(menuItem, 1);
+        order.addItem(lineItem);
+        rebuild();
+    }
+
+    private void removeOrderLine(LineItem lineItem) {
+        order.removeItem(lineItem);
+        rebuild();
+    }
+
+    private void rebuild() {
+        removeAll();
+        orderLines.clear();
+
+        int row = 0;
+        for (LineItem lineItem : order.getLineItems()) {
+            addRow(row, lineItem);
+            row++;
+        }
+
+        addFiller(row);
+
+        revalidate();
+        repaint();
+        onOrderChanged.run();
+    }
+
+    private void addRow(int row, LineItem lineItem) {
+        MenuItem menuItem = lineItem.getMenuItem();
+
         //Name
-        GridBagConstraints nameConstraints = createButtonConstraints(0, nextRow, GridBagConstraints.WEST);
+        GridBagConstraints nameConstraints = createConstraints(0, row, GridBagConstraints.WEST);
         nameConstraints.insets = new Insets(5, 0, 5, 40);
         JLabel nameLabel = new JLabel(menuItem.getName());
         nameLabel.setPreferredSize(new Dimension(NAME_COLUMN_WIDTH, nameLabel.getPreferredSize().height));
         add(nameLabel, nameConstraints);
 
         //Price
-        GridBagConstraints priceConstraints = createButtonConstraints(1, nextRow, GridBagConstraints.EAST);
+        GridBagConstraints priceConstraints = createConstraints(1, row, GridBagConstraints.EAST);
         priceConstraints.insets = new Insets(5, 20, 5, 0);
         String priceText = String.format(Locale.ENGLISH, "%.2f SEK", menuItem.getPrice());
         add(new JLabel(priceText), priceConstraints);
 
-        LineItem lineItem = new LineItem(menuItem, 1);
-        order.addItem(lineItem);
-
         //Amount
-        GridBagConstraints spinnerConstraints = createButtonConstraints(2, nextRow, GridBagConstraints.WEST);
+        GridBagConstraints spinnerConstraints = createConstraints(2, row, GridBagConstraints.WEST);
         spinnerConstraints.insets = new Insets(5, 20, 5, 0);
-        JSpinner amountSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+        JSpinner amountSpinner = new JSpinner(new SpinnerNumberModel(lineItem.getAmount(), 1, 99, 1));
         amountSpinner.addChangeListener(e -> {
             lineItem.setAmount((int) amountSpinner.getValue());
             onOrderChanged.run();
         });
         add(amountSpinner, spinnerConstraints);
-
         orderLines.put(menuItem, amountSpinner);
-        nextRow++;
 
-        revalidate();
-        repaint();
-        onOrderChanged.run();
+        //Remove
+        GridBagConstraints removeConstraints = createConstraints(3, row, GridBagConstraints.WEST);
+        removeConstraints.insets = new Insets(5, 10, 5, 0);
+        JButton removeButton = new JButton("X");
+        removeButton.setMargin(new Insets(0, 4, 0, 4));
+        removeButton.setForeground(Color.RED);
+        removeButton.setFont(removeButton.getFont().deriveFont(Font.BOLD));
+        removeButton.setFocusPainted(false);
+        removeButton.addActionListener(e -> removeOrderLine(lineItem));
+        add(removeButton, removeConstraints);
+    }
+
+    private void addFiller(int row) {
+        GridBagConstraints fillerConstraints = new GridBagConstraints();
+        fillerConstraints.gridx = 0;
+        fillerConstraints.gridy = Math.max(row, maxDistinctItems);
+        fillerConstraints.weighty = 1.0;
+        fillerConstraints.fill = GridBagConstraints.VERTICAL;
+        add(Box.createGlue(), fillerConstraints);
     }
 
     @Override
@@ -93,8 +126,8 @@ public class OrderPanel extends JPanel {
     public Dimension getMaximumSize() {
         return reservedSize;
     }
-    
-    private GridBagConstraints createButtonConstraints(int gridx, int gridy, int anchor) {
+
+    private GridBagConstraints createConstraints(int gridx, int gridy, int anchor) {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = gridx;
         constraints.gridy = gridy;
