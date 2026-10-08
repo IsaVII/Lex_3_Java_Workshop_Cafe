@@ -17,14 +17,20 @@ public class CafeFrame extends JFrame {
         //Main layout - stack content top to bottom
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        MenuPanel menuPanel = new MenuPanel(menu.getMenuItems());
+        OrderPanel orderPanel = new OrderPanel();
+        orderPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        MenuPanel menuPanel = new MenuPanel(menu.getMenuItems(), orderPanel::addOrderLine);
         menuPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuPanel.setMaximumSize(menuPanel.getPreferredSize());
+
+        
 
         add(componentCreator.createTitleLabel());
         add(componentCreator.createGreetingLabel());
         add(componentCreator.createMenuLabel());
         add(menuPanel);
+        add(orderPanel);
 
         //Default data
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
