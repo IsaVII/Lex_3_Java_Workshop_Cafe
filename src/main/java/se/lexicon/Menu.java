@@ -38,5 +38,8 @@ public class Menu {
     public List<MenuItem> getMenuItems() {
         return menuItems;
     }
-    
+
+    public MenuItem getMenuItem(int number) {
+        return menuItems.get(number -1);
+    }
 }
