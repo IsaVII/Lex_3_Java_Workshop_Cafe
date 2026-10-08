@@ -44,6 +44,17 @@ public class Printer {
         printLine();
     }
 
+    public void printEndOfDayReport(int customerCount, double totalRevenue) {
+        printLine();
+        IO.println("\tEnd of Day Report");
+        printLine();
+        
+        IO.println(String.format("%-20s : %d", "Customers served", customerCount));
+        System.out.printf(Locale.ENGLISH, "%-20s : %.2f SEK%n", "Total revenue", totalRevenue);
+       
+        printLine();
+    }
+
     private void printLine() {
         IO.println("==============================");
     }
@@ -57,4 +68,5 @@ public class Printer {
         printLine();
     }
 
+  
 }
