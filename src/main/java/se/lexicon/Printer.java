@@ -26,15 +26,16 @@ public class Printer {
         printCafeTitle();
         IO.println(String.format("%-12s : %s", "Customer", userName));
         IO.println(String.format("%-12s : %s x %d", "Order", menuItem.getName(), orderAmount));
-        System.out.printf(Locale.ENGLISH, "%-12s : %.2f SEK%n", "SubTotal", SubTotal);
-        
+        IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "SubTotal", SubTotal));
+
+
         if (Discount > 0) {
-            System.out.printf(Locale.ENGLISH, "%-12s : -%.2f SEK%n", "Discount",  Discount);
+            IO.println(String.format(Locale.ENGLISH, "%-12s : -%.2f SEK", "Discount",  Discount));
         }
         
-        System.out.printf(Locale.ENGLISH, "%-12s : %.2f SEK%n", "VAT", VAT);
+        IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "VAT", VAT));
         IO.println("------------------------------");
-        System.out.printf(Locale.ENGLISH, "%-12s : %.2f SEK%n", "Total Price", totalPrice);
+        IO.println(String.format(Locale.ENGLISH, "%-12s : %.2f SEK", "Total Price", totalPrice));
     }
 
     public void printGoodBye(String userName) {
@@ -50,7 +51,7 @@ public class Printer {
         printLine();
         
         IO.println(String.format("%-20s : %d", "Customers served", customerCount));
-        System.out.printf(Locale.ENGLISH, "%-20s : %.2f SEK%n", "Total revenue", totalRevenue);
+        IO.println(String.format(Locale.ENGLISH, "%-20s : %.2f SEK", "Total revenue", totalRevenue));
        
         printLine();
     }
@@ -63,7 +64,7 @@ public class Printer {
         for (int i = 0; i < menuItems.size(); i++) {
             MenuItem menuItem = menuItems.get(i);
             //Locale.ENGLISH, because otherwise it would be "," instead of "." for the decimal format
-            System.out.printf(Locale.ENGLISH, "%d.\t%-15s %.2f SEK%n", i + 1, menuItem.getName(), menuItem.getPrice());
+            IO.println(String.format(Locale.ENGLISH, "%d.\t%-15s %.2f SEK", i + 1, menuItem.getName(), menuItem.getPrice()));
         }
         printLine();
     }
