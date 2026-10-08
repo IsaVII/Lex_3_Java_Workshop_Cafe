@@ -10,13 +10,11 @@ public class CafeApp {
 
         //***** Get username ***** 
         String userNameQuestion = "Welcome to Lexicon Cafe! What is your name?";
-/*        String userName = IO.readln(userNameQuestion);
+        String userName = IO.readln(userNameQuestion);
         //if no username -> ask again
         while (StringValidation.IsEmptyString(userName)) {
             userName = IO.readln(userNameQuestion);
-        }*/
-
-        String userName = "Isa"; //TODO:: REMOVE; SINCE THIS IS JUST FOR TESTING 
+        }
 
         //*****  Print greeting and menu   ***** 
         printer.greeting(userName);
@@ -66,9 +64,18 @@ public class CafeApp {
         
         boolean isLoyaltyMember = loyaltyMemberInput.equalsIgnoreCase("yes");
         
-        //*****  Calculate total price and print receipt  *****
-         
+        //*****  Calculate total price *****
+        MenuItem menuItem = menu.getMenuItems().get(menuNumber - 1);
+        double subTotal = menuItem.getPrice() * orderAmount;
+        double discount = isLoyaltyMember ? subTotal * 0.15 : subTotal > 150 ? subTotal * 0.10 : 0;
+        double vat = (subTotal - discount) * 0.12;
+        double totalPrice = subTotal - discount + vat;
+
+        //***** print receipt  *****
+        printer.printOrderSummary(userName, menuItem, orderAmount, subTotal, totalPrice, discount, vat);
         
+        //***** print goodbye message  *****
+        printer.printGoodBye(userName);
     }
 }
     

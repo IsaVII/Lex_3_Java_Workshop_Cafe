@@ -8,6 +8,7 @@ public class Printer {
     public void printMenu(List<MenuItem> menuItems){
         printCafeTitle();
         printOrderList(menuItems);
+        IO.println("");
     }
 
     public void greeting(String userName) {
@@ -21,21 +22,21 @@ public class Printer {
     }
     
     public void printOrderSummary(String userName, MenuItem menuItem, int orderAmount, double SubTotal, double totalPrice, double Discount, double VAT){
-        printLine();
-        IO.println(String.format("%-15s : %s", "Customer", userName));
-        IO.println(String.format("%-15s : %s x %d", "Order", menuItem.getName(), orderAmount));;
-        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "SubTotal", SubTotal);
-        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "Discount", Discount);
-        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "VAT", VAT);
+        IO.println("");
+        printCafeTitle();
+        IO.println(String.format("%-12s : %s", "Customer", userName));
+        IO.println(String.format("%-12s : %s x %d", "Order", menuItem.getName(), orderAmount));;
+        System.out.printf(Locale.ENGLISH,   "%-12s : %.2f SEK%n", "SubTotal", SubTotal);
+        System.out.printf(Locale.ENGLISH,   "%-12s : %s%.2f SEK%n", "Discount", (Discount>0 ? "-" : "") ,Discount);
+        System.out.printf(Locale.ENGLISH,   "%-12s : %.2f SEK%n", "VAT", VAT);
         IO.println("------------------------------");
-        System.out.printf(Locale.ENGLISH,   "%-15s : %.2f SEK%n", "Total Price", totalPrice);
-        printLine();
+        System.out.printf(Locale.ENGLISH,   "%-12s : %.2f SEK%n", "Total Price", totalPrice);
     }
     
     public void printGoodBye(String userName) {
         printLine();
-        IO.println("Thank you, " + userName + "!\n" +
-                "Have a great day and see you next time.!");
+        IO.println("\tThank you, " + userName + "!\n" +
+                "\tSee you next time!");
         printLine();
     }
 
